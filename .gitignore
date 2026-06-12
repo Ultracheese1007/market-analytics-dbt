@@ -5,3 +5,6 @@ __pycache__/
 *.pyc
 .env
 keyfile.json
+
+.venv/
+venv/
