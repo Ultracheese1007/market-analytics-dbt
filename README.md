@@ -65,4 +65,4 @@ instead of rebuilding history:
 {% if is_incremental() %}
 where trade_date > (select max(trade_date) from {{ this }})
 {% endif %}
-\`\`\`
+\`\`\`sql
