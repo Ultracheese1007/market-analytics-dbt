@@ -53,13 +53,4 @@ dbt docs generate && dbt docs serve   # browse the lineage graph
 
 ### Note on incremental materialization
 
-`fct_daily_prices` ships as a **full-refresh table** in this repo because the BigQuery **sandbox** (free tier) disallows DML, which dbt's incremental strategies (`merge` / `insert_overwrite`) rely on. In a billed environment the same model runs as a true incremental — processing only new trading days instead of rebuilding history:
-
-​```sql
-{{ config(materialized='incremental', unique_key='price_id',
-          incremental_strategy='merge') }}
-...
-{% if is_incremental() %}
-where trade_date > (select max(trade_date) from {{ this }})
-{% endif %}
-​```
+`fct_daily_prices` ships as a **full-refresh table** in this repo because the BigQuery **sandbox** (free tier) disallows DML, which dbt's incremental strategies (`merge` / `insert_overwrite`) rely on. In a billed environment the same model runs as a true incremental, processing only new trading days instead of rebuilding history. The incremental config lives in the git history of `models/marts/fct_daily_prices.sql`.
