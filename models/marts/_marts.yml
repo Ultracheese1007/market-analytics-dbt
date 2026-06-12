@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: dim_tickers
+    description: "Ticker dimension: symbol, company name, sector."
+    columns:
+      - name: ticker
+        tests: [not_null, unique]
+
+  - name: fct_daily_prices
+    description: "Incremental fact table — one row per ticker per trading day: close, prev close, daily return, volume."
+    columns:
+      - name: price_id
+        tests: [not_null, unique]
+      - name: ticker
+        description: "FK to dim_tickers."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_tickers')
+              field: ticker
+
+  - name: mart_technical_indicators
+    description: "Per-ticker daily indicators: 20/50-day MA, 20-day return volatility, 14-day RSI."
+    columns:
+      - name: price_id
+        tests: [not_null, unique]
+      - name: rsi_14
+        description: "Relative Strength Index over a 14-day window (return-based)."

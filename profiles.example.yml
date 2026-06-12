@@ -1,0 +1,27 @@
+# Copy this file to ~/.dbt/profiles.yml and fill in your project id.
+# Auth method "oauth" uses the credentials from:
+#   gcloud auth application-default login
+market_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: YOUR_GCP_PROJECT_ID     # <-- edit
+      dataset: market_analytics        # dbt writes models here (will be created)
+      location: US                     # MUST match the location of your datasets
+      threads: 4
+      timeout_seconds: 300
+
+# --- Fallback: service-account key (use this if OAuth gives you trouble) ---
+# market_analytics:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: bigquery
+#       method: service-account
+#       project: YOUR_GCP_PROJECT_ID
+#       keyfile: /absolute/path/to/keyfile.json
+#       dataset: market_analytics
+#       location: US
+#       threads: 4

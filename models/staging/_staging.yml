@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: market_raw
+    database: market-analytics-dbt    # <-- edit: your GCP project id
+    schema: market_raw               # the BigQuery dataset
+    tables:
+      - name: prices
+
+models:
+  - name: stg_prices
+    description: "Cleaned, typed, renamed daily prices — one row per ticker per trading day."
+    columns:
+      - name: price_id
+        description: "Surrogate key (ticker + trade_date)."
+        tests: [not_null, unique]
+      - name: ticker
+        tests: [not_null]
+      - name: trade_date
+        tests: [not_null]
+      - name: close_price
+        tests: [not_null]
